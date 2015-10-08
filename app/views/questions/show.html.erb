@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="large-12">
+    <h1>Questions!!!!!</h1>
+      <p><%= @question.title %></p>
+      <a href="/questions/<%= @question.id %>/edit">Edit</a>
+      <a data-method="delete" href="/questions/<%= @question.id %>">Delete</a>
+
+      <p><%= markdown(@question.description).html_safe %></p>
+
+        <% if @accepted_response %>
+          <div class='response'>
+            <p>ACCEPTED ANSWER!</p>
+
+            <%= markdown(@accepted_response.description).html_safe %>
+          <a href="/questions/<%= @question.id %>/responses/<%= @accepted_response.id %>/edit">Edit</a>
+          <a data-method="put" href="/questions/<%= @question.id %>/responses/<%= @accepted_response.id %>/unaccepted">Unaccept Answer</a>
+        </div>
+        <% end %>
+
+        <% @responses.each do |response| %>
+          <div class='response'>
+          <%= markdown(response.description).html_safe %>
+          <a href="/questions/<%= @question.id %>/responses/<%= response.id %>/edit">Edit</a>
+
+          <% if @accepted_response == nil %>
+            <a data-method="put" href="/questions/<%= @question.id %>/responses/<%= response.id %>/accepted">Accept Answer</a>
+          <% end %>
+          <br>
+
+        </div>
+        <% end %>
+
+      <h1>New Response</h1>
+
+      <%= form_for [@question, @response] do |f| %>
+        <%= f.label :description %>
+        <%= f.text_area :description %>
+
+        <%= f.submit %>
+      <% end %>
+  </div>
+</div>
